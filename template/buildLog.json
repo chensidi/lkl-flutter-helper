@@ -1,0 +1,5 @@
+{
+  "name": "build log",
+  "description": "记录每次打包时的项目信息",
+  "logList": []
+}

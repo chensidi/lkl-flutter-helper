@@ -1,0 +1,10 @@
+import 'package:merchant/net/http_api.dart';
+import 'http.dart' show Http;
+
+Future<DemoResModel> demoApi(DemoReqModel data) async {
+  final jsonMap = await Http.request(
+    url: HttpApi.<%= api %>,
+    data: data.toJson(),
+  );
+  return DemoResModel.fromJson(jsonMap);
+}

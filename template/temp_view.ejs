@@ -1,0 +1,25 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:merchant/base/base_stateless_widget.dart';
+import '<%= pageName %>_logic.dart' show <%= pageName %>Logic;
+
+class <%= pageName %>Page extends BaseStatelessWidget {
+  <%= pageName %>Page({super.key});
+  final logic = Get.put<<%= pageName %>Logic>(<%= pageName %>Logic());
+
+  @override
+  Widget lifecycleBuild(BuildContext context) {
+    return Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(title: const Text('title')),
+        body: Container(
+            width: double.infinity,
+            decoration: const BoxDecoration(),
+            child: GetBuilder<<%= pageName %>Logic>(
+              builder: (GetxController controller) {
+                return Container();
+              },
+            )));
+  }
+}

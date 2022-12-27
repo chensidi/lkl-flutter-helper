@@ -1,0 +1,37 @@
+{
+  "name": "lkl-flutter-helper",
+  "description": "拉卡拉flutter项目的专属脚手架工具",
+  "keywords": [
+    "cli",
+    "flutter",
+    "命令行工具"
+  ],
+  "version": "1.1.1",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "commonjs",
+  "author": {
+    "name": "Jacky Cheung",
+    "email": "2541012495@qq.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chensidi/lkl-flutter-helper.git"
+  },
+  "homepage": "https://github.com/chensidi/lkl-flutter-helper",
+  "bugs": "https://github.com/chensidi/lkl-flutter-helper/issues",
+  "bin": {
+    "lkl-flu": "./bin/index.js"
+  },
+  "dependencies": {
+    "commander": "8.3.0",
+    "dayjs": "^1.11.7",
+    "ejs": "^3.1.8",
+    "inquirer": "8.2.4",
+    "shelljs": "^0.8.5"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.11",
+    "@types/shelljs": "^0.8.11"
+  }
+}
