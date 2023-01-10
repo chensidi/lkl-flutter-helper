@@ -8,24 +8,29 @@ const { resolve } = require('path')
 const shell = require('shelljs')
 const fs = require('fs')
 const dayjs = require('dayjs')
+const ncp = require("copy-paste");
 
 let useTime = 0
 
-module.exports = ({ vsit, canary, production }) => {
+module.exports = ({ vsit, canary, production, name }) => {
+  // ncp.copy('some text', function () {
+  //   // complete...
+  // })
+  // return
   if (vsit) { // 测试环境
     // return execBuildCmd(['run','build:android:vsit'])
-    execOriginCmd('main_vsit.dart')
-    return intoLog({vsit, canary, production})
+    execOriginCmd('main_vsit.dart', 'vist')
+    return intoLog({vsit, canary, production}, name)
   }
   if (canary) {
     // return execBuildCmd(['run','build:android:canary'])
-    execOriginCmd('main_canary.dart')
-    return intoLog({vsit, canary, production})
+    execOriginCmd('main_canary.dart', 'canary')
+    return intoLog({vsit, canary, production}, name)
   }
   if (production) {
     // return execBuildCmd(['run','build:android'])
-    execOriginCmd('main.dart')
-    return intoLog({vsit, canary, production})
+    execOriginCmd('main.dart', 'prod')
+    return intoLog({vsit, canary, production}, name)
   }
 }
 
@@ -36,7 +41,7 @@ function execBuildCmd(cmd) {
   })
 }
 
-function execOriginCmd(entry) {
+function execOriginCmd(entry, env) {
   const startTime = Date.now()
   shell.exec(`flutter build apk lib/${entry}`, {
     'async': false
@@ -70,7 +75,7 @@ function getBuildInfo({ vsit, canary, production }) {
   return buildInfo
 }
 
-function intoLog({ vsit, canary, production }) {
+function intoLog({ vsit, canary, production }, name) {
   const logPath = resolve(process.cwd(), './buildLog.json')
   if (!fs.existsSync(logPath)) {
     fs.cpSync(
@@ -93,6 +98,10 @@ function intoLog({ vsit, canary, production }) {
       ...json.logList,
     ])
     fs.writeFileSync(logPath, JSON.stringify(json, null, 2))
+    renameApk(
+      vsit ? 'vsit' : (canary ? 'canary' : production ? 'prod' : ''),
+      name
+    )
   })
 }
 
@@ -108,4 +117,11 @@ function saveApk() {
     apkBuildDir,
     day + '.apk'
   ))
+}
+
+// 根据构建环境重命名
+function renameApk(env, name) {
+  const apkPath = resolve(process.cwd(), 'build/app/outputs/flutter-apk/app-release.apk')
+  const rename = name ? resolve(process.cwd(), `build/app/outputs/flutter-apk/${name}.apk`) : resolve(process.cwd(), `build/app/outputs/flutter-apk/app-release-${env}.apk`)
+  fs.renameSync(apkPath, rename)
 }

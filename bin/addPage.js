@@ -8,6 +8,7 @@ const fs = require('fs')
 const { resolve, join } = require('path')
 const { prompt } = require('inquirer')
 const ejs = require('ejs')
+const { isFileExist, existsubDir, mkFile } = require('../src/utils')
 
 module.exports = async () => {
   const createNew = await askAction()
@@ -31,17 +32,19 @@ async function createPageDir() {
     }
   ])
   const pagePath = resolve(modelPath, pageName)
+  if (isFileExist(pagePath)) return
   fs.mkdirSync(pagePath)
-
   await createPage(pageName, pagePath)
   await createLogic(pageName, pagePath)
 }
+
+
 
 // 新建页面文件
 async function createPage(pageName, path) {
   const tempPage = fs.readFileSync(resolve(__dirname, '../template/temp_view.ejs'), 'utf-8')
   const pageContent = ejs.render(tempPage, { pageName })
-  fs.writeFileSync(
+  mkFile(
     resolve(path, `${pageName}_view.dart`),
     pageContent.toString()
   )
@@ -51,7 +54,7 @@ async function createPage(pageName, path) {
 async function createLogic(logicName, path) {
   const tempLogic = fs.readFileSync(resolve(__dirname, '../template/temp_logic.ejs'), 'utf-8')
   const logicContent = ejs.render(tempLogic, { logicName })
-  fs.writeFileSync(
+  mkFile(
     resolve(path, `${logicName}_logic.dart`),
     logicContent.toString()
   )
@@ -101,17 +104,20 @@ async function deepChooseDir(path) {
       message: '请选择你的目标文件夹'
     }
   ])
+  
+  const hasSubDir = existsubDir(resolve(curPath, dirName))
   const { inHere } = await prompt([
     {
       name: 'inHere',
       type: 'confirm',
-      message: '是否在已选择的目录下创建，还是继续选择该目录下的子目录？',
+      message: hasSubDir ? '是否在已选择的目录下创建，还是继续选择该目录下的子目录？' : '直接在该目录下创建？',
       default: true
     }
   ])
   if (inHere) { // 直接在此处创建
     return dirName
   } else { // 继续选择目录
+    if (!hasSubDir) return dirName
     const res = deepChooseDir(dirName)
     return res
   }

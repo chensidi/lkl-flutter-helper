@@ -15,9 +15,10 @@ const fs = require('fs')
 const { resolve, join } = require('path')
 const { prompt } = require('inquirer')
 const ejs = require('ejs')
+const { isFileExist, existsubDir, mkFile } = require('../src/utils')
 
 module.exports = async function addApi() {
-  if (!isModelExist()) {
+  if (!isFileExist(resolve(process.cwd(), 'lib/model'))) {
     createModel()
   }
   const createNew = await askAction()
@@ -34,10 +35,6 @@ module.exports = async function addApi() {
   console.log('创建完成')
 }
 
-function isModelExist() {
-  const path = resolve(process.cwd(), 'lib/model')
-  return fs.existsSync(path)
-}
 
 function createModel() {
   const path = resolve(process.cwd(), 'lib/model')
@@ -83,7 +80,7 @@ function createDemoDart(path, modelName) {
   const demeClass = 
   `class ${modelName} {
 
-  }`
+}`
   fs.writeFileSync(demoPath, demeClass)
 }
 

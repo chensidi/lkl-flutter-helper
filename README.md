@@ -16,7 +16,7 @@
 
 > 该脚手架是为内部项目定制化的，不一定适合所有flutter项目，因为这是针对公司内现有项目代码组织结构而规划的，若其他朋友在使用过程中有问题可提[issues](https://github.com/chensidi/lkl-flutter-helper/issues)，到时候我们整理一下，发布一个更通用的脚手架
 
-![./imgs/demo.png](./imgs/demo.png)
+![png](http://zhoup.top:3005/netDisk/downloadFile?fileName=flutter-dir.png)
 
 ## 安装
 

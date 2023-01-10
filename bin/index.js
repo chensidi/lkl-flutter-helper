@@ -24,8 +24,9 @@ program
   .option('-V, --vsit')
   .option('-C, --canary')
   .option('-P, --production')
-  .action(async ({ vsit, canary, production }) => {
-    require('./build')({ vsit, canary, production })
+  .option('-N, --name <char>', '打包后重命名')
+  .action(async ({ vsit, canary, production, name }) => {
+    require('./build')({ vsit, canary, production, name })
   })
 
 // 添加配置package.json命令
