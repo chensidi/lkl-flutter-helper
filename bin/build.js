@@ -9,6 +9,7 @@ const shell = require('shelljs')
 const fs = require('fs')
 const dayjs = require('dayjs')
 const ncp = require("copy-paste");
+const os = require('os')
 
 let useTime = 0
 
@@ -107,6 +108,8 @@ function intoLog({ vsit, canary, production }, name) {
 
 // 保存apk副本
 function saveApk() {
+  const isWin = os.platform() === 'win32'
+  if (!isWin) return
   const day = dayjs().format('YYYY-MM-DD HH.mm')
   const apk = resolve(process.cwd(), 'build/app/outputs/flutter-apk/app-release.apk')
   const apkBuildDir = resolve('D:\\flutter-apk')
